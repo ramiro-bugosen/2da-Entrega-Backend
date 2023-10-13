@@ -24,7 +24,7 @@ const productsSchema = new mongoose.Schema({
     category:{
         type:String,
         required:true,
-         enum:["Laptop","Netbook","Notbook", "TV", "Celular"]
+         enum:["Laptop","Desktop", "TV", "Celular"]
     },
     thumbnail:{
         type:String,
