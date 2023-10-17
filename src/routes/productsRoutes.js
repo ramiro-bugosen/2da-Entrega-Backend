@@ -36,7 +36,7 @@ router.put("/:productId", async (req, res) => {
     try {
       const productId = req.params.productId;
       const newProductInfo = req.body;
-      const updatedProduct = await productsManager.updateProduct(productId, newProductInfo);
+      const updatedProduct = await productsService.updateProduct(productId, newProductInfo);
       res.json({ status: 'success', data: updatedProduct });
     } catch (error) {
       res.json({ status: 'error', message: error.message });
@@ -46,7 +46,7 @@ router.put("/:productId", async (req, res) => {
   router.delete("/:productId", async (req, res) => {
     try {
       const productId = req.params.productId;
-      const deletedProduct = await productsManager.deleteProduct(productId);
+      const deletedProduct = await productsService.deleteProduct(productId);
       res.json({ status: 'success', message: "Producto eliminado" });
     } catch (error) {
       res.status(400).json({ status: 'error', message: error.message });
