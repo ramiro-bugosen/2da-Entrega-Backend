@@ -16,7 +16,11 @@ app.listen(port,()=>console.log(`Server listening on port ${port}`));
 
 connectDB();
 
-app.engine('.hbs', engine({extname: '.hbs'}));
+app.engine('.hbs', engine({extname: '.hbs',
+defaultLayout: 'main',
+runtimeOptions: {
+    allowProtoPropertiesByDefault: true
+}}));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname,"/views"));
 

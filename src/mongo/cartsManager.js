@@ -33,19 +33,20 @@ export class CartsManagerMongo{
 
     async addProduct(cartId, productId){
         try {
-            const cart = await this.getCartById(cartId);
-            const newProductCart = {
-                productId:productId,
-                quantity:1
-            }
-            cart.products.push(newProductCart);
-            const result = await this.model.findByIdAndUpdate(cartId,cart, {new:true});
-            return result;
-        } catch (error) {
-            console.log(error.message);
-            throw new Error("No se pudo agregar el producto al carrito");
+        const carts = await this.model.findById(cartId);
+        const productExist=carts.products.findIndex(elm=>elm.productId._id == productId)
+        if(productExist!=-1){
+        carts.products[productExist].quantity++;
+        }else{
+        carts.products.push({productId, quantity:1});
         }
-    };
+        const result = await this.model.findByIdAndUpdate(cartId,carts, {new:true});
+        return result;
+        } catch (error) {
+        console.log(error.message);
+        throw new Error("No se pudo agregar el producto al carrito");
+        }
+        };
 
     async deleteProduct(cartId, productId){
         try {
@@ -70,7 +71,6 @@ export class CartsManagerMongo{
             const cart = await this.getCartById(cartId);
             const productIndex = cart.products.findIndex(elm=>elm.productId._id == productId);
             if(productIndex>=0){
-                console.log(cart.products[productIndex])
                 cart.products[productIndex].quantity = newQuantity;
                 const result = await this.model.findByIdAndUpdate(cartId,cart, {new:true});
                 return result;

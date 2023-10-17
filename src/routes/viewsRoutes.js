@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { productsService } from "../index.js";
+import { cartsService, productsService } from "../index.js";
 
 const router = Router();
 
 router.get("/", async(req,res)=>{
-    const {limit=3,page=1} = req.query;
+    const {limit=5,page=1} = req.query;
     const query = {
-        category:"Desktop"
+        // category: desktop
+        // stock: 13
     };
     const options = {
         limit,
@@ -32,5 +33,17 @@ router.get("/", async(req,res)=>{
     res.render("home",dataProducts);
 });
 
+router.get("/carts/:id", async (req, res) => {
+    try {
+        const cartId = req.params.id;
+        const cart = await cartsService.getCartById(cartId);
+        if (!cart) {
+            return res.json({ message: 'Carrito no encontrado' });
+        }
+        res.render("carts", { cart });
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+});
 
 export {router as viewsRouter}
