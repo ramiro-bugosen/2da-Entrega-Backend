@@ -17,8 +17,8 @@ addToCartButtons.forEach(button => {
 });
 
 function addToCart(productId) {
-  fetch(`/carts/${cartId}/product/${productId}`, {
-    method: 'PUT',
+  fetch(`api/carts/652e2622fbd4668e6f853049/product/${productId}`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },

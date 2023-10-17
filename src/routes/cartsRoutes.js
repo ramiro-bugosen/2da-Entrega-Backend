@@ -31,7 +31,7 @@ router.post("/",async(req,res)=>{
     }
 });
 
-router.put("/:cid/product/:pid", async(req,res)=>{
+router.post("/:cid/product/:pid", async(req,res)=>{
     try {
         const {cid:cartId,pid:productId} = req.params;
         const cart = await cartsService.getCartById(cartId);
@@ -42,7 +42,7 @@ router.put("/:cid/product/:pid", async(req,res)=>{
     }
 });
 
-router.delete("/:cid/products/:pid", async(req,res)=>{
+router.delete("/:cid/product/:pid", async(req,res)=>{
     try {
         const {cid:cartId,pid:productId} = req.params;
         const cart = await cartsService.getCartById(cartId);
@@ -53,7 +53,7 @@ router.delete("/:cid/products/:pid", async(req,res)=>{
     }
 });
 
-router.put("/:cid/products/:pid", async(req,res)=>{
+router.put("/:cid/product/:pid", async(req,res)=>{
     try {
         const {cid:cartId,pid:productId} = req.params;
         const {newQuantity} = req.body;
@@ -62,6 +62,32 @@ router.put("/:cid/products/:pid", async(req,res)=>{
         res.json({status:"success", result});
     } catch (error) {
         res.json({error:error.message});
+    }
+});
+
+router.post("/652e2622fbd4668e6f853049/product/:pid", async (req, res) => {
+    try {
+        const { pid: productId } = req.params;
+        const cartId = "652e2622fbd4668e6f853049";
+        const cart = await cartsService.getCartById(cartId);
+        const result = await cartsService.addProduct(cartId, productId);
+        res.json({ status: "success", result });
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+});
+
+router.delete("/:cid", async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const result = await cartsService.deleteCart(cartId);
+        if (result) {
+            res.json({ status: "success", message: "Carrito eliminado" });
+        } else {
+            res.json({ status: "error", message: "Carrito no encontrado" });
+        }
+    } catch (error) {
+        res.json({ status: "error", error: error.message });
     }
 });
 

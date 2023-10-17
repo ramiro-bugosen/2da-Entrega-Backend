@@ -5,7 +5,15 @@ export class CartsManagerMongo{
         this.model=cartsModel;
     };
 
-    async getCarts(){};
+    async getCarts() {
+        try {
+            const result = await this.model.find().populate("products.productId").lean();
+            return result;
+        } catch (error) {
+            console.log(error.message);
+            throw new Error("No se pudieron obtener los carritos");
+        }
+    }
 
     async getCartById(cartId){
         try {
@@ -82,4 +90,18 @@ export class CartsManagerMongo{
             throw new Error("No se pudo actualizar el producto al carrito");
         }
     };
+
+    async deleteCart(cartId) {
+        try {
+            const result = await this.model.deleteOne({ _id: cartId });
+            if (result.deletedCount === 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.log("Error:", error.message);
+            throw new Error("Se produjo un error al eliminar el carrito");
+        }
+    }
 }
