@@ -1,0 +1,19 @@
+<h1>Pagina Login</h1>
+
+<p style="color: green;">{{message}}</p>
+<p style="color: red;">{{error}}</p>
+
+<fieldset style="width: 200px; padding: 20px">
+    <p>Ingresa tus datos</p>
+<form method="post" action="/api/sessions/login">
+    <input type="email" name="email" placeholder="Correo"/>
+    <br><br>
+    <input type="password" name="password" placeholder="Contraseña"/>
+    <br/>
+    <button style="margin: 15px;">Iniciar sesión</button>
+</form>
+</fieldset>
+<div>
+<p>Si no estas logueado Registrate Acá!</p>
+<a href="/signup">Registrarse</a>
+</div>

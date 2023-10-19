@@ -1,7 +1,10 @@
-<h1>Página del home</h1>
+<h3>¡Bienvenido {{userEmail}}! Gracias por iniciar sesión.</h3>
+<p>Su rol es: {{userRole}}</p>
+<h1>Página del home</h1> 
 
 Listado de productos
 {{#each payload}}
+
     <div>Nombre del producto: {{this.title}}, precio: {{this.price}} <button class="add-to-cart-button" data-product-id="{{this._id}}">Agregar al carrito</button></div>
 {{/each}}
 <a href="{{prevLink}}">Anterior</a>
