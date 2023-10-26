@@ -9,6 +9,9 @@ import {engine} from "express-handlebars";
 import session from "express-session";
 import MongoStore from "connect-mongo"
 import { sessionsRouter } from "./routes/sessionsRoutes.js";
+import { config } from "./config/config.js";
+import passport from "passport";
+import { initializePassport } from "./config/passport.config.js";
  
 const port = 8080;
 const app = express();
@@ -18,17 +21,21 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.listen(port,()=>console.log(`Server listening on port ${port}`));
 
+connectDB();
+
 app.use(session({
-    store:MongoStore.create({
-        ttl:60,
-        mongoUrl:"mongodb+srv://RamiroBugosen:gBI1RKFzBHLU19DF@coderhousecluster.sl1alid.mongodb.net/ecommerce?retryWrites=true&w=majority"
+    store: MongoStore.create({ 
+        mongoUrl: config.mongo.url,
+        ttl: 60
     }),
-    secret:"secretCoder",
-    resave:true,
-    saveUninitialized:true
+    secret: config.server.secretSession,
+    resave: true,
+    saveUninitialized: true
 }));
 
-connectDB();
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.engine('.hbs', engine({extname: '.hbs',
 defaultLayout: 'main',

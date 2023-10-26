@@ -6,6 +6,8 @@
 <fieldset style="width: 200px; padding: 20px">
     <p>Ingresa tus datos</p>
 <form method="post" action="/api/sessions/signup">
+    <input type="text" name="first_name" placeholder="Nombre"/>
+    <br><br>
     <input type="email" name="email" placeholder="Correo"/>
     <br><br>
     <input type="password" name="password" placeholder="Contraseña"/>
@@ -13,3 +15,9 @@
     <button style="margin: 15px;">Registrarse</button>
 </form>
 </fieldset>
+<hr>
+<a href="/api/sessions/signup-github">
+    <button>
+        Registrarse con Github
+    </button>
+</a>

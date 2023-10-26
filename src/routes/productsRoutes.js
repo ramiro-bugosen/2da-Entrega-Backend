@@ -54,6 +54,4 @@ router.put("/:productId", async (req, res) => {
   });
 
 
-
-
 export {router as productsRouter};

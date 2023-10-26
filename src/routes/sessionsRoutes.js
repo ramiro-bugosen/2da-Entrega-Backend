@@ -1,51 +1,42 @@
 import { Router } from "express";
 import { usersModel } from "../models/usersModel.js";
+import passport from "passport";
+import { config } from "../config/config.js";
 
 const router = Router();
 
-router.post("/signup", async (req, res) => {
-    try {
-      const signupForm = req.body;
-      const existUser = await usersModel.findOne({ email: signupForm.email });
-      if (existUser) {
-        return res.render("signupView", { error: "Este usuario ya está registrado" });
-      }
-      let role = "user";
-      if (signupForm.email === "adminCoder@coder.com" && signupForm.password === "adminCod3r123") {
-        role = "admin";
-      }
-      const result = await usersModel.create({
-        email: signupForm.email,
-        password: signupForm.password,
-        role: role,
-      });
-      res.render("loginView", { message: "Usuario registrado correctamente" });
-    } catch (error) {
-      res.render("signupView", { error: "No se pudo registrar el usuario" });
-    }
-  });
-  
+router.post("/signup", passport.authenticate("signupLocalStrategy", {
+  failureRedirect: "/signup"
+}), async (req, res) => {
+  res.redirect("/login");
+});
 
 
-  router.post("/login", async (req, res) => {
-    try {
-      const loginForm = req.body;
-      const user = await usersModel.findOne({ email: loginForm.email });
-      if (!user) {
-        return res.render("loginView", { error: "Este usuario no está registrado" });
-      }
-      if (user.password !== loginForm.password) {
-        return res.render("loginView", { error: "Credenciales inválidas" });
-      }
-      req.session.email = user.email;
-      req.session.role = user.role;
-      res.redirect("/");
-    } catch (error) {
-      res.render("loginView", { error: "No se pudo iniciar sesión para este usuario" });
-    }
-  });
+router.post("/login", passport.authenticate("loginLocalStrategy",{
+  failureRedirect:"/login"
+}) , async(req,res)=>{
+  res.redirect("/");
+});
   
-  
+
+  router.get("/signup-github", passport.authenticate("signupGithubStrategy"));
+
+  router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrategy",{
+    failureRedirect:"/signup"
+  }), (req,res)=>{
+    res.redirect("/profile");
+  });  
+
+
+  /* router.get("/fail-signup",(req,res)=>{
+    res.render("signupView",{error:"No se pudo registrar el usuario"});
+});
+
+
+  router.get("/fail-login",(req,res)=>{
+    res.render("loginView",{error:"No se pudo iniciar sesion para este usuario"});
+}); */
+
 
 router.get("/logout", async(req,res)=>{
     try {
