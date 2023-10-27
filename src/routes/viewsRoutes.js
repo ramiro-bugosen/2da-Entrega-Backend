@@ -4,9 +4,9 @@ import { cartsService, productsService } from "../index.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-    if (req.session.email) {
-      const userEmail = req.session.email;
-      const userRole = req.session.role;
+    if (req.user) {
+      const userEmail = req.user.email;
+      const userRole = req.user.role;
       const { limit = 5, page = 1 } = req.query;
       const query = {
         // category: desktop
@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
 
 router.get("/carts/:id", async (req, res) => {
     try {
-      if (!req.session.email) {
+      if (!req.user.email) {
         return res.redirect("/login");
       }
   
@@ -79,8 +79,8 @@ router.get("/login",(req,res)=>{
 });
 
 router.get("/profile",(req,res)=>{
-    if(req.session.email){
-        const userEmail = req.session.email;
+    if(req.user.email){
+        const userEmail = req.user.email;
         res.render("profileView",{userEmail});
     } else {
         res.redirect("/login");
