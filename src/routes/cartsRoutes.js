@@ -1,94 +1,16 @@
 import { Router } from "express";
 import { cartsService, productsService } from "../index.js";
+import { CartController } from "../controllers/cartController.js";
 
 const router = Router();
 
-router.get("/", async(req,res)=>{
-    try {
-        const carts = await cartsService.getCarts();
-        res.json({data:carts});
-    } catch (error) {
-        res.json({error:error.message});
-    }
-});
-
-router.get("/:cid", async(req,res)=>{
-    try {
-        const cartId = req.params.cid;
-        const cart = await cartsService.getCartById(cartId);
-        res.json({status:"success", data: cart});
-    } catch (error) {
-        res.json({error:error.message});
-    }
-});
-
-router.post("/",async(req,res)=>{
-    try {
-        const cartCreated = await cartsService.createCart();
-        res.json({status:"success",data: cartCreated});
-    } catch (error) {
-        res.json({status:"error",error:error.message});
-    }
-});
-
-router.post("/:cid/product/:pid", async(req,res)=>{
-    try {
-        const {cid:cartId,pid:productId} = req.params;
-        const cart = await cartsService.getCartById(cartId);
-        const result = await cartsService.addProduct(cartId,productId);
-        res.json({status:"success", result});
-    } catch (error) {
-        res.json({error:error.message});
-    }
-});
-
-router.delete("/:cid/product/:pid", async(req,res)=>{
-    try {
-        const {cid:cartId,pid:productId} = req.params;
-        const cart = await cartsService.getCartById(cartId);
-        const result = await cartsService.deleteProduct(cartId, productId);
-        res.json({status:"success", result});
-    } catch (error) {
-        res.json({error:error.message});
-    }
-});
-
-router.put("/:cid/product/:pid", async(req,res)=>{
-    try {
-        const {cid:cartId,pid:productId} = req.params;
-        const {newQuantity} = req.body;
-        const cart = await cartsService.getCartById(cartId);
-        const result = await cartsService.updateProductCart(cartId,productId,newQuantity);
-        res.json({status:"success", result});
-    } catch (error) {
-        res.json({error:error.message});
-    }
-});
-
-router.post("/652e2622fbd4668e6f853049/product/:pid", async (req, res) => {
-    try {
-        const { pid: productId } = req.params;
-        const cartId = "652e2622fbd4668e6f853049";
-        const cart = await cartsService.getCartById(cartId);
-        const result = await cartsService.addProduct(cartId, productId);
-        res.json({ status: "success", result });
-    } catch (error) {
-        res.json({ error: error.message });
-    }
-});
-
-router.delete("/:cid", async (req, res) => {
-    try {
-        const cartId = req.params.cid;
-        const result = await cartsService.deleteCart(cartId);
-        if (result) {
-            res.json({ status: "success", message: "Carrito eliminado" });
-        } else {
-            res.json({ status: "error", message: "Carrito no encontrado" });
-        }
-    } catch (error) {
-        res.json({ status: "error", error: error.message });
-    }
-});
+router.get("/", CartController.getcarts);
+router.get("/:cid", CartController.getCart);
+router.post("/", CartController.createCart);
+router.post("/:cid/product/:pid",CartController.addProductToCart);
+router.delete("/:cid/product/:pid", CartController.deleteProductCart);
+router.put("/:cid/product/:pid", CartController.updateProductCart);
+router.post("/652e2622fbd4668e6f853049/product/:pid", CartController.addProductToCart2);
+router.delete("/:cid", CartController.deleteCart);
 
 export {router as cartsRouter};
