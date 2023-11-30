@@ -30,4 +30,8 @@ router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrateg
 
 router.get("/logout", SessionsController.logout);
 
+router.post("/send-mail", SessionsController.sendMail);
+
+router.post("/send-sms", SessionsController.sendSMS);
+
 export {router as sessionsRouter};

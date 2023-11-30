@@ -90,4 +90,40 @@ export class CartController {
             res.json({ status: "error", error: error.message });
         }
     }
+
+    static purchaseCart = async(req,res) => {
+        try {
+            const {cid: cartId} = req.params;
+            const cart = await cartsService.getCartById(cartId);
+            if(cart.products.length){
+                const ticketProducts=[];
+                const rejectedProducts=[];
+                for(let i=0;i<cart.products.length;i++){
+                    const cartProduct =cart.products[i];
+                    const productInfo = cartProduct.productId;
+                    if(cartProduct.quantity <= productInfo.stock){
+                        ticketProducts.push(cartProduct);
+                    } else {
+                        rejectedProducts.push(cartProduct);
+                    }
+                };
+                console.log("ticketProducts",ticketProducts);
+                console.log("rejectedProducts",rejectedProducts);
+                const newTicket = {
+                    code:uuidv4(),
+                    purchase_datetime: new Date(),
+                    amount:100,
+                    purchaser:req.user.email
+                };
+                console.log("newTicket",newTicket);
+                //crear el ticket en base de datos.
+                //actualizar el carrito del usuario con los productos rechazados
+                res.json({status:"success", message:"Compra realizada, algunos productos no se pudieron comprar por falta de stock", rejectedProducts});
+            } else {
+                res.json({status:"error", message:"El carrito esta vacio"});
+            }
+        } catch (error) {
+            res.json({error:error.message})
+        }
+    }
 }

@@ -49,12 +49,10 @@ router.get("/", async (req, res) => {
       res.redirect("/login");
     }
   });
-  
-  
 
 router.get("/carts/:id", async (req, res) => {
     try {
-      if (!req.user.email) {
+      if (!req.user?.email) {
         return res.redirect("/login");
       }
   
@@ -79,7 +77,7 @@ router.get("/login",(req,res)=>{
 });
 
 router.get("/profile",(req,res)=>{
-    if(req.user.email){
+    if(req.user?.email){
         const userEmail = req.user.email;
         res.render("profileView",{userEmail});
     } else {

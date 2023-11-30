@@ -12,6 +12,7 @@ import { sessionsRouter } from "./routes/sessionsRoutes.js";
 import { config } from "./config/config.js";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
+import { contactsRouter } from "./routes/contactsRoutes.js";
  
 const port = 8080;
 const app = express();
@@ -49,4 +50,5 @@ app.use(viewsRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/contacts", contactsRouter);
 
