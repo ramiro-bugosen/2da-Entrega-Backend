@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { cartsService, productsService } from "../index.js";
+import { generateProduct } from "../mocks/mock.js";
 
 const router = Router();
 
@@ -84,5 +85,18 @@ router.get("/profile",(req,res)=>{
         res.redirect("/login");
     }
 });
+
+router.get("/mockingproducts", (req,res)=>{
+    try {
+      const products = []
+      for (let i=0; i < 100; i++) {
+        const newProduct = generateProduct(); 
+        products.push(newProduct);
+    }
+      res.json({status:"success", data:products});
+    } catch (error) {
+      res.json({ error: "Ha ocurrido un error" });
+    }
+})
 
 export {router as viewsRouter}

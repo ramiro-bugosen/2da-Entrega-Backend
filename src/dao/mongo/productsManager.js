@@ -1,4 +1,7 @@
 import { productsModel } from "../mongo/models/productsModel.js";
+import { CustomError } from "../../errors/errorManager.js";
+import { productCreateError, updateProductError } from "../../errors/productsError.js";
+import { EError } from "../../errors/EError.js";
 
 export class ProductsManagerMongo{
     constructor(){
@@ -10,8 +13,12 @@ export class ProductsManagerMongo{
             const result = await this.model.create(productInfo);
             return result;
         } catch (error) {
-            console.log("createProduct: ", error.message);
-            throw new Error("Se produjo un error al crear el producto");
+          CustomError.createError({
+            name:"Create product error",
+            cause: productCreateError(req.body),
+            message:"Datos invalidos para crear el producto",
+            errorCode: EError.INVALID_BODY_JSON
+        });
         }
     };
 
@@ -53,8 +60,12 @@ export class ProductsManagerMongo{
           }
           return result;
         } catch (error) {
-          console.error('Error al actualizar el producto:', error);
-          throw new Error('No se pudo actualizar el producto');
+          CustomError.createError({
+            name:"Update product error",
+            cause: updateProductError(req.body),
+            message:"Datos invalidos para actualizar el producto",
+            errorCode: EError.UPDATE_PRODUCT_ERROR
+        });
         }
       }
 

@@ -1,4 +1,8 @@
 import { cartsModel } from "../mongo/models/cartsModel.js";
+import { CustomError } from "../../errors/errorManager.js";
+import { addToCartError } from "../../errors/productsError.js";
+import { EError } from "../../errors/EError.js";
+
 
 export class CartsManagerMongo{
     constructor(){
@@ -51,8 +55,11 @@ export class CartsManagerMongo{
         const result = await this.model.findByIdAndUpdate(cartId,carts, {new:true});
         return result;
         } catch (error) {
-        console.log(error.message);
-        throw new Error("No se pudo agregar el producto al carrito");
+            CustomError.createError({
+                name:"Add product to cart error",
+                cause: addToCartError(req.body),
+                message: "No se pudo agregar el producto al carrito",
+                errorCode: EError.ADDTOCART_ERROR});
         }
         };
 
