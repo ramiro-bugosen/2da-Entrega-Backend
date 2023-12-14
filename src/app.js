@@ -13,14 +13,14 @@ import { config } from "./config/config.js";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import { contactsRouter } from "./routes/contactsRoutes.js";
- 
+import { logger } from "./helpers/logger.js";
 const port = 8080;
 const app = express();
 
 app.use(express.static(path.join(__dirname,"/public")));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
-app.listen(port,()=>console.log(`Server listening on port ${port}`));
+app.listen(port,()=>logger.info(`Server listening on port ${port}`));
 
 connectDB();
 

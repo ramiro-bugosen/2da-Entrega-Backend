@@ -2,6 +2,7 @@ import { productsModel } from "../mongo/models/productsModel.js";
 import { CustomError } from "../../errors/errorManager.js";
 import { productCreateError, updateProductError } from "../../errors/productsError.js";
 import { EError } from "../../errors/EError.js";
+import { logger } from "../../helpers/logger.js";
 
 export class ProductsManagerMongo{
     constructor(){
@@ -27,7 +28,7 @@ export class ProductsManagerMongo{
             const result = await this.model.find().lean();
             return result;
         } catch (error) {
-            console.log("getProducts: ", error.message);
+            logger.error("getProducts: ", error.message);
             throw new Error("Se produjo un error al crear el producto");
         }
     };
@@ -37,7 +38,7 @@ export class ProductsManagerMongo{
             const result = await this.model.paginate(query, options);
             return result;
         } catch (error) {
-            console.log("getProducts: ", error.message);
+            logger.error("getProducts: ", error.message);
             throw new Error("Se produjo un error al crear el producto");
         }
     };
@@ -47,7 +48,7 @@ export class ProductsManagerMongo{
           const result = await this.model.findById(productId).lean();
           return result;
         } catch (error) {
-          console.log("getProductById: ", error.message);
+          logger.error("getProductById: ", error.message);
           throw new Error("Se produjo un error al obtener el producto por ID");
         }
       }
@@ -77,7 +78,7 @@ export class ProductsManagerMongo{
           }
           return result;
         } catch (error) {
-          console.error('Error al eliminar el producto:', error);
+          logger.error('Error al eliminar el producto:', error);
           throw new Error('No se pudo eliminar el producto');
         }
       }

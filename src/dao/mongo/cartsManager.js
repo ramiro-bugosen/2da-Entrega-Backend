@@ -2,6 +2,7 @@ import { cartsModel } from "../mongo/models/cartsModel.js";
 import { CustomError } from "../../errors/errorManager.js";
 import { addToCartError } from "../../errors/productsError.js";
 import { EError } from "../../errors/EError.js";
+import { logger } from "../../helpers/logger.js";
 
 
 export class CartsManagerMongo{
@@ -14,7 +15,7 @@ export class CartsManagerMongo{
             const result = await this.model.find().populate("products.productId").lean();
             return result;
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error("No se pudieron obtener los carritos");
         }
     }
@@ -27,7 +28,7 @@ export class CartsManagerMongo{
             };
             return result;
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error("No se pudo obtener el carrito");
         }
     };
@@ -38,7 +39,7 @@ export class CartsManagerMongo{
             const result = await this.model.create(newCart);
             return result;
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error("No se pudo crear el carrito");
         }
     };
@@ -76,7 +77,7 @@ export class CartsManagerMongo{
                 throw new Error("El producto no se puede eliminar porque no ha sido agregado");
             }
         } catch (error) {
-            console.log("deleteProduct",error.message);
+            logger.error("deleteProduct",error.message);
             throw new Error("No se pudo eliminar el producto del carrito");
         }
     };
@@ -93,7 +94,7 @@ export class CartsManagerMongo{
                 throw new Error("El producto no se puede actualizar porque no ha sido agregado");
             }
         } catch (error) {
-            console.log("updateProductCart",error.message);
+            logger.error("updateProductCart",error.message);
             throw new Error("No se pudo actualizar el producto al carrito");
         }
     };
@@ -107,7 +108,7 @@ export class CartsManagerMongo{
                 return false;
             }
         } catch (error) {
-            console.log("Error:", error.message);
+            logger.error("Error:", error.message);
             throw new Error("Se produjo un error al eliminar el carrito");
         }
     }

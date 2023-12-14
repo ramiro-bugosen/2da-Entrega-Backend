@@ -2,7 +2,7 @@ import { config } from "../config/config.js";
 import { transporter } from "../config/gmail.js";
 import { emailTemplate } from "../config/gmail.js";
 import { twilioClient } from "../config/twilio.js";
-
+import { logger } from "../helpers/logger.js";
 export class SessionsController {
     
     static logout = (req,res) => {
@@ -24,10 +24,10 @@ export class SessionsController {
                 subject:"Tu registro ha sido exitoso",
                 html: emailTemplate("Proyecto"),
             });
-            console.log(result);
+            logger.info(result);
             res.json({status:"success", message:"correo enviado"});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
             res.json({status:"error", message:"Hubo un error al enviar el correo"})
         }
     }
@@ -39,10 +39,10 @@ export class SessionsController {
                 to: "Numero a enviar",
                 body:"Su pedido fue realizado correctamente"
             });
-            console.log(result);
+            logger.info(result);
             res.json({status:"success", message:"Envio de mensaje exitoso"});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
             res.json({status:"error", message:"Hubo un error al enviar el mensaje de texto"})
         }
     }

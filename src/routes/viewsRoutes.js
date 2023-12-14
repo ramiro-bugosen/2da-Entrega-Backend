@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { cartsService, productsService } from "../index.js";
 import { generateProduct } from "../mocks/mock.js";
+import { logger } from "../helpers/logger.js";
 
 const router = Router();
 
@@ -97,6 +98,16 @@ router.get("/mockingproducts", (req,res)=>{
     } catch (error) {
       res.json({ error: "Ha ocurrido un error" });
     }
-})
+});
 
+
+router.get("/loggertest", async (req,res)=>{
+    logger.fatal("log fatal");
+    logger.error("log error");
+    logger.warning("log warning");
+    logger.info("log info");
+    logger.http("log http");
+    logger.debug("log debug");
+    res.send("test logger");
+});
 export {router as viewsRouter}
