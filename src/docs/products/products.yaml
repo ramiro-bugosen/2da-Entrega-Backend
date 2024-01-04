@@ -1,0 +1,106 @@
+paths:
+  /api/products/:
+    post:
+      summary: Endpoint para crear un producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createUpdateProduct"
+      responses:
+        "200":
+          description: Creacion del producto exitoso
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCreateProduct"
+        "500":
+          description: fallo del servidor
+    get:
+      summary: Endpoint para obtener todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos se obtuvieron correctamente
+
+  /api/products/{pid}:
+    get:
+      summary: Endpoint para obtener un producto mediante su ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se obtuvo correctamente
+    put:
+      summary: Endpoint para actualizar un producto
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto fue actualizado correctamente
+    delete:
+      summary: Endpoint para eliminar un producto
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto fue eliminado correctamente
+
+components:
+  schemas:
+    SuccessCreateProduct:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: object
+      example:
+        status: "success"
+        result:
+          title: "Computadora"
+  requestBodies:
+    createUpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        code:
+          type: string
+        category:
+          type: string
+        stock:
+          type: number
+      example:
+        title: Computadora Gama Alta
+        description: Computadora Intel, i7 11700k, 16gb de ram
+        price: 92000
+        code: abc002
+        category: Desktop
+        stock: 13

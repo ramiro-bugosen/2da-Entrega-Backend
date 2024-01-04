@@ -1,0 +1,137 @@
+paths:
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Endpoint para finalizar la compra del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Creación del producto exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessPurchaseCart"
+        "500":
+          description: Fallo del servidor
+
+  /api/carts/:
+    get:
+      summary: Endpoint para obtener todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos se obtuvieron correctamente
+    post:
+      summary: Endpoint para crear un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: El carrito se creó correctamente
+
+  /api/carts/{cid}:
+    get:
+      summary: Endpoint para obtener un carrito mediante un ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El carrito se obtuvo correctamente
+    delete:
+      summary: Endpoint para eliminar un carrito mediante su ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El carrito se eliminó correctamente
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Endpoint para agregar un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto fue agregado al carrito
+    delete:
+      summary: Endpoint para eliminar un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto fue eliminado del carrito
+    put:
+      summary: Endpoint para actualizar un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto del carrito fue actualizado
+
+components:
+  schemas:
+    SuccessPurchaseCart:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        rejectedProducts:
+          type: array
+      example:
+        status: "success"
+        message: "Compra realizada, algunos productos no se pudieron comprar por falta de stock"
+        rejectedProducts: []

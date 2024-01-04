@@ -14,6 +14,9 @@ import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import { contactsRouter } from "./routes/contactsRoutes.js";
 import { logger } from "./helpers/logger.js";
+import { swaggerSpecs } from './config/swaggerConfig.js';
+import swaggerUI from "swagger-ui-express";
+
 const port = 8080;
 const app = express();
 
@@ -51,4 +54,5 @@ app.use("/api/products",productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/contacts", contactsRouter);
+app.use("/api/docs", swaggerUI.serve , swaggerUI.setup(swaggerSpecs));
 
