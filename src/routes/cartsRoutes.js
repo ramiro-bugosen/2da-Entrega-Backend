@@ -11,7 +11,7 @@ router.post("/", CartController.createCart);
 router.post("/:cid/product/:pid",checkRole(["user"]), CartController.addProductToCart);
 router.delete("/:cid/product/:pid", CartController.deleteProductCart);
 router.put("/:cid/product/:pid", CartController.updateProductCart);
-router.post("/652e2622fbd4668e6f853049/product/:pid",checkRole(["user"]), CartController.addProductToCart2);
+router.post("/65cb1b8ca7536f7e241f1f22/product/:pid",checkRole(["user"]), CartController.addProductToCart2);
 router.delete("/:cid", CartController.deleteCart);
 router.post("/:cid/purchase", CartController.purchaseCart)
 export {router as cartsRouter};
