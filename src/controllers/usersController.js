@@ -54,4 +54,50 @@ export class UsersController{
             res.json({status:"error", message:error.message});
         }
     };
+
+    static getAllUsers = async (req, res) => {
+        try {
+            const users = await usersService.getAllUsers();
+            const usersData = users.map(user => ({
+                first_name: user.first_name,
+                email: user.email,
+                role: user.role
+            }));
+            res.json({ status: "success", data: usersData });
+        } catch (error) {
+            res.json({ status: "error", message: error.message });
+        }
+    }
+
+    static async deleteInactiveUsers(req, res) { // No pude enviar el email con el mensaje de eliminacion de cuenta, ya que me crasheaba el server.
+        try {
+            const currentDate = new Date();
+            const inactivePeriod = 2;
+            const cutoffDate = new Date(currentDate.getTime() - inactivePeriod * 24 * 60 * 60 * 1000);
+            const result = await usersService.deleteInactiveUsers(cutoffDate);
+            res.json({ status: "success", message: result.message });
+        } catch (error) {
+            res.json({ status: "error", message: error.message });
+        }
+    }
+
+    static async deleteUser(req, res) {
+        try {
+            const userId = req.params.userId;
+            await usersService.deleteUser(userId);
+            res.redirect("/admin");
+        } catch (error) {
+            console.error("Error al eliminar el usuario:", error);
+            res.send("Error al eliminar el usuario: " + error.message);
+        }
+    }
+
+    static async showAdminUsersPage(req, res) {
+        try {
+            const users = await usersService.getAllUsers();
+            res.render("layouts/admin", { users });
+        } catch (error) {
+            res.send("Error al cargar la página de administración de usuarios");
+        }
+    }
 }

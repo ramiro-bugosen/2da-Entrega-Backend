@@ -13,4 +13,10 @@ router.post("/:uid/documents", isAuth, uploadDocuments.fields([
     {name:"estadoDeCuenta", maxCount:1},
 ]),  UsersController.uploadUserDocuments );
 
+router.get("/", UsersController.getAllUsers);
+
+router.delete("/inactive-users", UsersController.deleteInactiveUsers);
+
+router.post("/admin/:userId", checkRole(["admin"]), UsersController.deleteUser);
+
 export { router as usersRouter};

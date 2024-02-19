@@ -3,18 +3,18 @@ import { transporter } from "../config/gmail.js";
 import { emailTemplate } from "../config/gmail.js";
 import { twilioClient } from "../config/twilio.js";
 import { logger } from "../helpers/logger.js";
+import { usersService } from "../index.js";
 export class SessionsController {
     
-    static logout = (req,res) => {
-        try {
-            req.session.destroy(err=>{
-                if(err) return res.render("profileView",{error:"No se pudo cerrar la sesion"});
-                res.redirect("/");
-            })
-        } catch (error) {
-            res.render("signupView",{error:"No se pudo registrar el usuario"});
-        }
-    }
+    static logout = async(req,res)=>{
+        console.log(req.user);
+        const user = {...req.user};
+        user.last_connection = new Date();
+        await usersService.updateUser(user._id, user);
+        req.session.destroy((error)=>{
+            res.send("sesion finalizada");
+        });
+    };
 
     static sendMail = async (req,res) => {
         try {
@@ -89,4 +89,5 @@ export class SessionsController {
             res.json({status:"error", message:error.message});
         }
     };
+
 }

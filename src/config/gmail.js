@@ -21,3 +21,13 @@ export const emailTemplate = (user)=>
         <a href="http://localhost:8080/login">Ahora inicia sesión</a>
     </div>
 `;
+
+export const accountDeletedEmail = (userName) => 
+` 
+<h1>
+
+    Hola ${userName},
+
+    Lamentamos informarte que tu cuenta ha sido eliminada debido a nuestras politicas de inactividad.
+</h1>
+`;

@@ -44,4 +44,32 @@ export class UsersManagerMongo{
             throw new Error("Se produjo un error actualizando el usuario");
         }
     };
+
+    async getAllUsers() {
+        try {
+            const users = await this.model.find().lean();
+            return users;
+        } catch (error) {
+            throw new Error("Error al obtener todos los usuarios");
+        }
+    }
+
+    async deleteInactiveUsers(cutoffDate) {
+        try {
+            const result = await this.model.deleteMany({ last_connection: { $lt: cutoffDate } });
+            return { success: true, message: `${result.deletedCount} usuarios inactivos eliminados` };
+        } catch (error) {
+            throw new Error("Error al eliminar usuarios inactivos");
+        }
+    }
+
+    async deleteUser(userId) {
+        try {
+            const result = await this.model.findByIdAndDelete(userId);
+            return result;
+        } catch (error) {
+            console.log("deleteUser: ", error.message);
+            throw new Error("Error al eliminar usuario");
+        }
+    }
 }

@@ -2,6 +2,8 @@ import { Router } from "express";
 import { cartsService, productsService } from "../index.js";
 import { generateProduct } from "../mocks/mock.js";
 import { logger } from "../helpers/logger.js";
+import { UsersController } from "../controllers/usersController.js";
+import { checkRole } from "../middlewares/checkRoles.js";
 
 const router = Router();
 
@@ -99,6 +101,8 @@ router.get("/mockingproducts", (req,res)=>{
       res.json({ error: "Ha ocurrido un error" });
     }
 });
+
+router.get("/admin", checkRole(["admin"]), UsersController.showAdminUsersPage);
 
 
 router.get("/loggertest", async (req,res)=>{
