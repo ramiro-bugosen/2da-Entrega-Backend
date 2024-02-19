@@ -10,3 +10,10 @@ export const checkRole = (roles)=>{
         }
     }
 };
+
+export const isAuth = (req,res,next)=>{
+    if(!req.user){
+        return res.json({status:"error", message:"Debes estar autenticado"});
+    }
+    next();
+};

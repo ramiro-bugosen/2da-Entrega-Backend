@@ -35,7 +35,7 @@ export class CartController {
         try {
             const {cid:cartId,pid:productId} = req.params;
             const cart = await cartsService.getCartById(cartId);
-            const product = await productsService.getProduct(productId);
+            const product = await productsService.getProducts(productId);
             const result = await cartsService.addProduct(cartId,productId);
             res.json({status:"success", result});
         } catch (error) {
@@ -69,7 +69,7 @@ export class CartController {
     static addProductToCart2 = async(req,res) => {
         try {
             const { pid: productId } = req.params;
-            const cartId = "652e2622fbd4668e6f853049";
+            const cartId = "65cb1fb62bf9e9c4d56d47f2";
             const cart = await cartsService.getCartById(cartId);
             const result = await cartsService.addProduct(cartId, productId);
             res.json({ status: "success", result });

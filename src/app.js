@@ -3,6 +3,7 @@ import { connectDB } from "./config/dbConnection.js";
 import { __dirname } from "./utils.js";
 import { cartsRouter } from "./routes/cartsRoutes.js";
 import { productsRouter } from "./routes/productsRoutes.js";
+import { usersRouter } from "./routes/usersRoutes.js";
 import { viewsRouter } from "./routes/viewsRoutes.js";
 import path from "path";
 import {engine} from "express-handlebars";
@@ -55,4 +56,5 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/contacts", contactsRouter);
 app.use("/api/docs", swaggerUI.serve , swaggerUI.setup(swaggerSpecs));
+app.use ("/api/users", usersRouter  )
 

@@ -8,10 +8,10 @@ const router = Router();
 router.get("/", CartController.getcarts);
 router.get("/:cid", CartController.getCart);
 router.post("/", CartController.createCart);
-router.post("/:cid/product/:pid",checkRole(["user"]), CartController.addProductToCart);
+router.post("/:cid/product/:pid", CartController.addProductToCart);
 router.delete("/:cid/product/:pid", CartController.deleteProductCart);
 router.put("/:cid/product/:pid", CartController.updateProductCart);
-router.post("/65cb1b8ca7536f7e241f1f22/product/:pid",checkRole(["user"]), CartController.addProductToCart2);
+router.post("/65d352ef9c9061c919f07c84/product/:pid", CartController.addProductToCart2);
 router.delete("/:cid", CartController.deleteCart);
 router.post("/:cid/purchase", CartController.purchaseCart)
 export {router as cartsRouter};

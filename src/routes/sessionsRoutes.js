@@ -34,4 +34,8 @@ router.post("/send-mail", SessionsController.sendMail);
 
 router.post("/send-sms", SessionsController.sendSMS);
 
+router.post("/forgot-password", SessionsController.forgotPassword);
+
+router.post("/reset-password", SessionsController.resetPassword);
+
 export {router as sessionsRouter};

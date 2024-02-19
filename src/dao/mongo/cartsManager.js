@@ -4,7 +4,6 @@ import { addToCartError } from "../../errors/productsError.js";
 import { EError } from "../../errors/EError.js";
 import { logger } from "../../helpers/logger.js";
 
-
 export class CartsManagerMongo{
     constructor(){
         this.model=cartsModel;
@@ -61,7 +60,7 @@ export class CartsManagerMongo{
                 cause: addToCartError(req.body),
                 message: "No se pudo agregar el producto al carrito",
                 errorCode: EError.ADDTOCART_ERROR});
-        }
+            }
         };
 
     async deleteProduct(cartId, productId){

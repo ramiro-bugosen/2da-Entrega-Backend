@@ -10,7 +10,14 @@
         </li>
     {{/each}}
 </ul>
-
+       <div> <button id="finalizar-compra-button">Finalizar compra</button></div>
+       <br>
 <a href="/">Volver a la página de inicio</a>
 
-
+<script>
+    function finalizarCompra() {
+        alert('Su compra se realizó correctamente');
+        window.location.href = '/login';
+    }
+    document.getElementById('finalizar-compra-button').addEventListener('click', finalizarCompra);
+</script>

@@ -67,7 +67,7 @@ export const initializePassport = ()=>{
         {
             clientID: config.github.clientId,
             clientSecret: config.github.clientSecret,
-            callbackURL: `http://localhost:8080/api/sessions${config.github.callbackUrl}`
+            callbackURL: `https://coderhouse-xf5n.onrender.com/api/sessions${config.github.callbackUrl}`
         },
         async(accessToken,refreshToken,profile,done)=>{
             try {
