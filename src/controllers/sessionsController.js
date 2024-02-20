@@ -4,6 +4,8 @@ import { emailTemplate } from "../config/gmail.js";
 import { twilioClient } from "../config/twilio.js";
 import { logger } from "../helpers/logger.js";
 import { usersService } from "../index.js";
+import { createHash, inValidPassword } from "../utils.js";
+import { generateEmailToken, sendChangePasswordEmail, verifyEmailToken } from "../helpers/email.js";
 export class SessionsController {
     
     static logout = async(req,res)=>{
@@ -51,15 +53,21 @@ export class SessionsController {
         const {email} = req.body;
         console.log(email);
         try {
-            //Veificar que el usuario exista
-            const user  = await UsersService.getUserByEmail(email);
-            // console.log(user);
-            const emailToken = generateEmailToken(email, 10 * 60)//5min
+            const user  = await usersService.getUserByEmail(email);
+            const emailToken = generateEmailToken(email, 10 * 60)
             await sendChangePasswordEmail(req,email,emailToken);
             res.send(`Se envio un enlace a su correo, <a href="/">Volver a la pagina de login</a>`);
         } catch (error) {
             res.json({status:"error", message:error.message});
         }
+    };
+
+    static failLogin = (req,res)=>{
+        res.render("loginView",{error:"No se pudo iniciar sesion para el usuario"});
+    };
+
+    static failSignup = (req,res)=>{
+        res.render("signupView",{error:"No se pudo registrar al usuario"});
     };
 
     static resetPassword = async(req,res)=>{
@@ -70,8 +78,7 @@ export class SessionsController {
             if(!validEmail){
                 return res.send(`El enlace ya no es valido, genera un nuevo <a href="/forgot-password">enlace</a>`);
             }
-            const user = await UsersService.getUserByEmail(validEmail);
-            console.log("user", user);
+            const user = await usersService.getUserByEmail(validEmail);
             if(!user){
                 return res.send(`Esta operacion no es valida`);
             }
@@ -82,8 +89,7 @@ export class SessionsController {
                 ...user,
                 password: createHash(newPassword)
             };
-            // console.log("userData", userData);
-            await UsersService.updateUser(user._id, userData);
+            await usersService.updateUser(user._id, userData);
             res.render("login",{message:"Contraseña actualizada"});
         } catch (error) {
             res.json({status:"error", message:error.message});

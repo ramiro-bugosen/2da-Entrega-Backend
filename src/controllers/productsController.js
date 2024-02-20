@@ -14,7 +14,7 @@ export class ProductsController{
         try {
             const productInfo = req.body;
             const result = await productsService.createProduct(productInfo);
-            res.json({status:"success",result});
+            res.redirect('/admin');
         } catch (error) {
             res.json({status:"error",message:error.message});
         }

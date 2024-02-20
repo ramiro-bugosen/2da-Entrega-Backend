@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { usersModel } from "../dao/mongo/models/usersModel.js";
 import passport from "passport";
 import { config } from "../config/config.js";
 import { SessionsController } from "../controllers/sessionsController.js";
@@ -7,14 +6,14 @@ import { SessionsController } from "../controllers/sessionsController.js";
 const router = Router();
 
 router.post("/signup", passport.authenticate("signupLocalStrategy", {
-  failureRedirect: "/signup"
+  failureRedirect:"/api/sessions/fail-signup"
 }), async (req, res) => {
   res.redirect("/login");
 });
 
 
 router.post("/login", passport.authenticate("loginLocalStrategy",{
-  failureRedirect:"/login"
+  failureRedirect:"/api/sessions/fail-login"
 }) , async(req,res)=>{
   res.redirect("/");
 });
@@ -27,6 +26,10 @@ router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrateg
   }), (req,res)=>{
     res.redirect("/profile");
   });  
+
+router.get("/fail-signup", SessionsController.failSignup);
+
+router.get("/fail-login", SessionsController.failLogin);
 
 router.get("/logout", SessionsController.logout);
 

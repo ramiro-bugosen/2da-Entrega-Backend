@@ -104,6 +104,14 @@ router.get("/mockingproducts", (req,res)=>{
 
 router.get("/admin", checkRole(["admin"]), UsersController.showAdminUsersPage);
 
+router.get("/forgot-password", (req,res)=>{
+  res.render("forgotPassView");
+});
+
+router.get("/reset-password", (req,res)=>{
+  const token = req.query.token;
+  res.render("resetPassView",{token});
+});
 
 router.get("/loggertest", async (req,res)=>{
     logger.fatal("log fatal");

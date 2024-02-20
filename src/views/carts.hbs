@@ -7,6 +7,7 @@
             Nombre del Producto: {{this.productId.title}}, 
             Precio: {{this.productId.price}}, 
             Cantidad: {{this.quantity}}
+             <button class="eliminar-producto-button" data-product-id="{{this.productId._id}}">Eliminar</button>
         </li>
     {{/each}}
 </ul>
@@ -19,5 +20,26 @@
         alert('Su compra se realizó correctamente');
         window.location.href = '/login';
     }
+    
+    function eliminarProducto(event) {
+    const productId = event.target.getAttribute('data-product-id');
+    fetch(`/api/carts/65d352ef9c9061c919f07c84/product/${productId}`, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al eliminar el producto');
+        }
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error('Error al eliminar el producto:', error);
+        alert('No se pudo eliminar el producto');
+    });
+}
+
     document.getElementById('finalizar-compra-button').addEventListener('click', finalizarCompra);
+    document.querySelectorAll('.eliminar-producto-button').forEach(button => {
+        button.addEventListener('click', eliminarProducto);
+    });
 </script>
